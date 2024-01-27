@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import admin from "firebase-admin";
-import serviceAccountKey from "./react-js-blog-website-yt-firebase-adminsdk-qmx1b-59ebae4882.json" assert { type: "json" }
+import serviceAccountKey from "./juan-blog-62a99-firebase-adminsdk-wre66-21854e597d.json" assert { type: "json" }
 import { getAuth } from "firebase-admin/auth";
 import aws from "aws-sdk";
 
@@ -35,7 +35,7 @@ mongoose.connect(process.env.DB_LOCATION, {
 
 // setting up s3 bucket
 const s3 = new aws.S3({
-    region: 'ap-south-1',
+    region: process.env.AWS_BUCKET_REGION,
     accessKeyId: process.env.AWS_ACCESS_KEY,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 })
@@ -46,7 +46,7 @@ const generateUploadURL = async () => {
     const imageName = `${nanoid()}-${date.getTime()}.jpeg`;
 
     return await s3.getSignedUrlPromise('putObject', {
-        Bucket: 'blogging-website-yt-tutorial',
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key: imageName,
         Expires: 1000,
         ContentType: "image/jpeg"
